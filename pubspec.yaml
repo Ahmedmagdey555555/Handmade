@@ -1,4 +1,4 @@
-Name: handmade_egypt
+name: handmade_egypt
 description: "A multi-vendor handmade marketplace monorepo for Egyptian heritage."
 publish_to: "none"
 version: 1.0.0+1
