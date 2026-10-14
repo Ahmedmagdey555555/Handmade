@@ -277,7 +277,8 @@ class AdminAdsManagementTab extends StatelessWidget {
                 labelStyle: const TextStyle(color: Color(0xFF9E9E9E)),
                 filled: true,
                 fillColor: const Color(0xFF12181F),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: Border.none),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
+
               ),
             ),
             const SizedBox(height: 10),
