@@ -4,8 +4,11 @@ workflows:
     environment:
       flutter: stable
     scripts:
-      - name: Build Consumer APK
+      - name: Create Flutter Android & Build APK
         script: |
+          # إنشاء مجلدات أندرويد و iOS تلقائياً لو مش موجودة
+          flutter create . --platforms=android --org com.handmade.egypt
+          flutter pub get
           flutter build apk --target=lib/consumer_app/main_consumer.dart --release
     artifacts:
       - build/app/outputs/flutter-apk/*.apk
@@ -15,8 +18,10 @@ workflows:
     environment:
       flutter: stable
     scripts:
-      - name: Build Artisan APK
+      - name: Create Flutter Android & Build APK
         script: |
+          flutter create . --platforms=android --org com.handmade.egypt
+          flutter pub get
           flutter build apk --target=lib/artisan_app/main_artisan.dart --release
     artifacts:
       - build/app/outputs/flutter-apk/*.apk
@@ -26,8 +31,10 @@ workflows:
     environment:
       flutter: stable
     scripts:
-      - name: Build Admin APK
+      - name: Create Flutter Android & Build APK
         script: |
+          flutter create . --platforms=android --org com.handmade.egypt
+          flutter pub get
           flutter build apk --target=lib/admin_app/main_admin.dart --release
     artifacts:
       - build/app/outputs/flutter-apk/*.apk
