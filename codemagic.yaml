@@ -1,0 +1,33 @@
+workflows:
+  consumer-app:
+    name: Handmade Egypt - Consumer App
+    environment:
+      flutter: stable
+    scripts:
+      - name: Build Consumer APK
+        script: |
+          flutter build apk --target=lib/consumer_app/main_consumer.dart --release
+    artifacts:
+      - build/app/outputs/flutter-apk/*.apk
+
+  artisan-app:
+    name: Handmade Egypt - Artisan App
+    environment:
+      flutter: stable
+    scripts:
+      - name: Build Artisan APK
+        script: |
+          flutter build apk --target=lib/artisan_app/main_artisan.dart --release
+    artifacts:
+      - build/app/outputs/flutter-apk/*.apk
+
+  admin-app:
+    name: Handmade Egypt - Admin App
+    environment:
+      flutter: stable
+    scripts:
+      - name: Build Admin APK
+        script: |
+          flutter build apk --target=lib/admin_app/main_admin.dart --release
+    artifacts:
+      - build/app/outputs/flutter-apk/*.apk
