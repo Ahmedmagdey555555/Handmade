@@ -331,3 +331,61 @@ class AdminFinancialsAndEscrowTab extends StatelessWidget {
     return const Center(child: Text('الماليات والضمان', style: TextStyle(color: Colors.white)));
   }
 }
+// جزء من شاشة تفاصيل الطلب والأرباح للتاجر لتوضيح الخصومات وكارت الضمان
+class ArtisanOrderDetailsCard extends StatelessWidget {
+  const ArtisanOrderDetailsCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E2630),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFA97835).withOpacity(0.3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('تفاصيل الأرباح والخصومات للأوردر #ORD-9901', style: TextStyle(color: Color(0xFFFEC7C2), fontWeight: FontWeight.bold, fontSize: 13)),
+          const SizedBox(height: 8),
+          const Text('• إجمالي سعر القطعة: 1,250 ج.م', style: TextStyle(color: Colors.white, fontSize: 11)),
+          const Text('• خصم عمولة المنصة (10%): -125 ج.م', style: TextStyle(color: Colors.redAccent, fontSize: 11)),
+          const Text('• تكلفة الشحن (تحمل الورشة لوجود ملاحظة/عيب): -75 ج.م', style: TextStyle(color: Colors.redAccent, fontSize: 11)),
+          const Divider(color: Color(0xFF12181F)),
+          const Text('صافي المبلغ المضاف لمحفظتك: 1,050 ج.م', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 12)),
+          const SizedBox(height: 14),
+          
+          // تنبيه إلزامي لإرفاق كارت الضمان والرسالة الترحيبية للبراند
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0xFF12181F),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: const Color(0xFFB87733)),
+            ),
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.card_giftcard, color: Color(0xFFB87733), size: 18),
+                    SizedBox(width: 6),
+                    Text('تنبيه هام جداً قبل التغليف وإرسال الطرد:', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 11, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                SizedBox(height: 6),
+                Text(
+                  '1. يجب إرفاق كارت الضمان الخاص بالقطعة داخل الطرد.\n'
+                  '2. يجب وضع كارت الرسالة الترحيبية الرسمية:\n'
+                  '   "أهلاً بك في عالم التراث.. شكراً لاختيارك منتجات هاند ميد مصر اليدوية الأصلية 🏺✨".',
+                  style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 10, height: 1.5),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
