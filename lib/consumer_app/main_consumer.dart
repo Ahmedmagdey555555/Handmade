@@ -30,13 +30,12 @@ class HandmadeEgyptConsumerApp extends StatelessWidget {
         Locale('ar', 'EG'),
         Locale('en', 'US'),
       ],
-      // نبدأ بشاشة تسجيل الدخول أولاً لتأمين حساب العميل وتحديد مكانه
       home: const LoginScreen(),
     );
   }
 }
 
-// 1. شاشة تسجيل الدخول وتحديد الموقع للعميل الجديد
+// 1. شاشة تسجيل الدخول وتحديد الموقع (معدلة لتجنب أخطاء العرض واللون الرمادي)
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -54,7 +53,6 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _fetchingLocation = true;
     });
-    // تم تصحيح المدة هنا لتصبح 1.5 ثانية (بالمللي ثانية) بدل ثواني معطلة
     Future.delayed(const Duration(milliseconds: 1500), () {
       if (!mounted) return;
       setState(() {
@@ -72,98 +70,107 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF12181F),
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Icon(Icons.handyman, color: Color(0xFFB87733), size: 60),
-                const SizedBox(height: 16),
-                const Text(
-                  'أهلاً بك في هاند ميد مصر',
-                  style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 20, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  'سجل بياناتك وموقعك لنتمكن من توصيل القطع التراثية لباب بيتك',
-                  style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 12),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 30),
-                TextField(
-                  controller: _nameController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    labelText: 'الاسم بالكامل',
-                    labelStyle: const TextStyle(color: Color(0xFF9E9E9E)),
-                    filled: true,
-                    fillColor: const Color(0xFF1E2630),
-                    prefixIcon: const Icon(Icons.person_outline, color: Color(0xFFB87733)),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(24.0),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.minHeight),
+                child: IntrinsicHeight(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 20),
+                      const Icon(Icons.handyman, color: Color(0xFFB87733), size: 60),
+                      const SizedBox(height: 16),
+                      const Text(
+                        'أهلاً بك في هاند ميد مصر',
+                        style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 20, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'سجل بياناتك وموقعك لنتمكن من توصيل القطع التراثية لباب بيتك',
+                        style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 12),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 30),
+                      TextField(
+                        controller: _nameController,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          labelText: 'الاسم بالكامل',
+                          labelStyle: const TextStyle(color: Color(0xFF9E9E9E)),
+                          filled: true,
+                          fillColor: const Color(0xFF1E2630),
+                          prefixIcon: const Icon(Icons.person_outline, color: Color(0xFFB87733)),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: _phoneController,
+                        keyboardType: TextInputType.phone,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          labelText: 'رقم الهاتف المحمول (للتواصل والشحن)',
+                          labelStyle: const TextStyle(color: Color(0xFF9E9E9E)),
+                          filled: true,
+                          fillColor: const Color(0xFF1E2630),
+                          prefixIcon: const Icon(Icons.phone_outlined, color: Color(0xFFB87733)),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: _addressController,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          labelText: 'عنوان التوصيل (المدينة، الشارع، التفاصيل)',
+                          labelStyle: const TextStyle(color: Color(0xFF9E9E9E)),
+                          filled: true,
+                          fillColor: const Color(0xFF1E2630),
+                          prefixIcon: const Icon(Icons.location_on_outlined, color: Color(0xFFB87733)),
+                          suffixIcon: IconButton(
+                            icon: _fetchingLocation 
+                                ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFFB87733)))
+                                : const Icon(Icons.my_location, color: Color(0xFFB87733)),
+                            onPressed: _getDeviceLocation,
+                            tooltip: 'تحديد الموقع تلقائياً عبر GPS',
+                          ),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFB87733),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        ),
+                        onPressed: () {
+                          if (_nameController.text.isEmpty || _phoneController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('من فضلك أدخل الاسم ورقم الهاتف على الأقل')),
+                            );
+                            return;
+                          }
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => const ConsumerHomeScreen()),
+                          );
+                        },
+                        child: const Text('دخول المتجر وبدء التسوق', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _phoneController,
-                  keyboardType: TextInputType.phone,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    labelText: 'رقم الهاتف المحمول (للتواصل والشحن)',
-                    labelStyle: const TextStyle(color: Color(0xFF9E9E9E)),
-                    filled: true,
-                    fillColor: const Color(0xFF1E2630),
-                    prefixIcon: const Icon(Icons.phone_outlined, color: Color(0xFFB87733)),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _addressController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    labelText: 'عنوان التوصيل (المدينة، الشارع، التفاصيل)',
-                    labelStyle: const TextStyle(color: Color(0xFF9E9E9E)),
-                    filled: true,
-                    fillColor: const Color(0xFF1E2630),
-                    prefixIcon: const Icon(Icons.location_on_outlined, color: Color(0xFFB87733)),
-                    suffixIcon: IconButton(
-                      icon: _fetchingLocation 
-                          ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFFB87733)))
-                          : const Icon(Icons.my_location, color: Color(0xFFB87733)),
-                      onPressed: _getDeviceLocation,
-                      tooltip: 'تحديد الموقع تلقائياً عبر GPS',
-                    ),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                  ),
-                ),
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFB87733),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  ),
-                  onPressed: () {
-                    if (_nameController.text.isEmpty || _phoneController.text.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('من فضلك أدخل الاسم ورقم الهاتف على الأقل')),
-                      );
-                      return;
-                    }
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const ConsumerHomeScreen()),
-                    );
-                  },
-                  child: const Text('دخول المتجر وبدء التسوق', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -487,7 +494,6 @@ class ProductCard extends StatelessWidget {
   }
 }
 
-// 4. باقي الشاشات (طلب خاص، الطلبات، الحساب، الدردشة، السلة، السياسات)
 class CustomOrderTab extends StatelessWidget {
   const CustomOrderTab({super.key});
 
