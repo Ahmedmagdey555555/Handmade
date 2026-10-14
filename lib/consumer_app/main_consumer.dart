@@ -111,7 +111,6 @@ class _ConsumerHomeScreenState extends State<ConsumerHomeScreen> {
   }
 }
 
-// 1. الواجهة الرئيسية للمتجر
 class StorefrontTab extends StatelessWidget {
   const StorefrontTab({super.key});
 
@@ -120,7 +119,6 @@ class StorefrontTab extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(16.0),
       children: [
-        // قسم الترحيب
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
@@ -146,8 +144,6 @@ class StorefrontTab extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-
-        // شريط البحث الفوري
         TextField(
           style: const TextStyle(color: Colors.white, fontSize: 13),
           decoration: InputDecoration(
@@ -164,8 +160,6 @@ class StorefrontTab extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-
-        // بنر الإعلانات الترويجي
         SizedBox(
           height: 120,
           child: PageView(
@@ -186,8 +180,6 @@ class StorefrontTab extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20),
-
-        // الأقسام التراثية واليدوية
         const Text(
           'الأقسام التراثية واليدوية',
           style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 14, fontWeight: FontWeight.bold),
@@ -209,8 +201,6 @@ class StorefrontTab extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20),
-
-        // قائمة القطع المعروضة
         const Text(
           'أحدث القطع المعروضة',
           style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 14, fontWeight: FontWeight.bold),
@@ -348,7 +338,6 @@ class ProductCard extends StatelessWidget {
   }
 }
 
-// 2. تبويب طلب تفصيل خاص
 class CustomOrderTab extends StatelessWidget {
   const CustomOrderTab({super.key});
 
@@ -375,89 +364,3 @@ class CustomOrderTab extends StatelessWidget {
         const SizedBox(height: 20),
         ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFB87733),
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 14),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          ),
-          onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('تم إرسال طلبك الخاص للإدارة، وسنوافيك بالرد فور مراجعته!')),
-            );
-          },
-          icon: const Icon(Icons.send_outlined),
-          label: const Text('إرسال الطلب للإدارة', style: TextStyle(fontWeight: FontWeight.bold)),
-        ),
-      ],
-    );
-  }
-}
-
-// 3. تبويب سجل الطلبات وتتبع الشحن
-class OrdersHistoryTab extends StatelessWidget {
-  const OrdersHistoryTab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(16.0),
-      children: [
-        const Text('طلباتي ومتابعة الشحن', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 14, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 12),
-        Container(
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: const Color(0xFF1E2630),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: const Color(0xFFA97835).withOpacity(0.2)),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('#ORD-9901', style: TextStyle(color: Color(0xFFB87733), fontWeight: FontWeight.bold, fontSize: 12)),
-                  Text('جاري الشحن 🚚', style: TextStyle(color: Colors.green, fontSize: 10, fontWeight: FontWeight.bold)),
-                ],
-              ),
-              const SizedBox(height: 6),
-              const Text('عباية مطرزة يدوياً شغل سيوي', style: TextStyle(color: Color(0xFFFEC7C2), fontWeight: FontWeight.bold, fontSize: 12)),
-              const Text('الإجمالي: 1,850 ج.م', style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 11)),
-              const SizedBox(height: 12),
-              const LinearProgressIndicator(value: 0.75, color: Color(0xFFB87733), backgroundColor: Color(0xFF12181F)),
-              const SizedBox(height: 6),
-              const Text('حالة الشحنة: تم المرور بنقطة التجميع وتغليف هاند ميد مصر وجاري التوصيل لك', style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 10)),
-              const SizedBox(height: 12),
-              ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF12181F),
-                  foregroundColor: const Color(0xFFB87733),
-                  side: const BorderSide(color: Color(0xFFB87733)),
-                  minimumSize: const Size(double.infinity, 36),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const OrderReviewScreen()),
-                  );
-                },
-                icon: const Icon(Icons.camera_alt_outlined, size: 16),
-                label: const Text('تقييم القطعة ورفع الصور بعد الاستلام'),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-// 4. تبويب الحساب والدعم والسياسات
-class ConsumerProfileTab extends StatelessWidget {
-  const ConsumerProfileTab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding
