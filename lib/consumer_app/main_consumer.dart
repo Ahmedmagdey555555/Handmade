@@ -368,7 +368,7 @@ class CustomOrderTab extends StatelessWidget {
             labelStyle: const TextStyle(color: Color(0xFF9E9E9E)),
             filled: true,
             fillColor: const Color(0xFF1E2630),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: Colors.transparent)),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
           ),
           maxLines: 4,
         ),
@@ -428,6 +428,23 @@ class OrdersHistoryTab extends StatelessWidget {
               const LinearProgressIndicator(value: 0.75, color: Color(0xFFB87733), backgroundColor: Color(0xFF12181F)),
               const SizedBox(height: 6),
               const Text('حالة الشحنة: تم المرور بنقطة التجميع وتغليف هاند ميد مصر وجاري التوصيل لك', style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 10)),
+              const SizedBox(height: 12),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF12181F),
+                  foregroundColor: const Color(0xFFB87733),
+                  side: const BorderSide(color: Color(0xFFB87733)),
+                  minimumSize: const Size(double.infinity, 36),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const OrderReviewScreen()),
+                  );
+                },
+                icon: const Icon(Icons.camera_alt_outlined, size: 16),
+                label: const Text('تقييم القطعة ورفع الصور بعد الاستلام'),
+              ),
             ],
           ),
         ),
@@ -443,222 +460,4 @@ class ConsumerProfileTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.all(20.0),
-      children: [
-        const Text('الحساب والدعم والسياسات', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 16, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 16),
-        ListTile(
-          leading: const Icon(Icons.support_agent_outlined, color: Color(0xFFB87733)),
-          title: const Text('الدعم الفني والخدمة', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 13)),
-          subtitle: const Text('تواصل مباشر مع فريق هاند ميد مصر', style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 10)),
-          onTap: () {},
-        ),
-        const Divider(color: Color(0xFF1E2630)),
-        ListTile(
-          leading: const Icon(Icons.privacy_tip_outlined, color: Color(0xFFB87733)),
-          title: const Text('سياسة الخصوصية', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 13)),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const PrivacyPolicyScreen()),
-            );
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.description_outlined, color: Color(0xFFB87733)),
-          title: const Text('الشروط والأحكام', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 13)),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const TermsScreen()),
-            );
-          },
-        ),
-      ],
-    );
-  }
-}
-
-// شاشة سلة المشتريات وتحديد طريقة الدفع
-class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
-
-  @override
-  State<CartScreen> createState() => _CartScreenState();
-}
-
-class _CartScreenState extends State<CartScreen> {
-  String _selectedPaymentMethod = 'cash_wallet';
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF12181F),
-      appBar: AppBar(
-        title: const Text('سلة المشتريات والدفع', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 16)),
-        backgroundColor: const Color(0xFF12181F),
-        iconTheme: const IconThemeData(color: Color(0xFFB87733)),
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(20.0),
-        children: [
-          const Text('اختر طريقة الدفع المناسبة', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 14, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 12),
-          
-          // 1. المحافظ الإلكترونية + الدفع عند الاستلام (متاحة)
-          RadioListTile<String>(
-            value: 'cash_wallet',
-            groupValue: _selectedPaymentMethod,
-            activeColor: const Color(0xFFB87733),
-            title: const Text('محفظة كاش / الدفع عند المعاينة والاستلام', style: TextStyle(color: Colors.white, fontSize: 13)),
-            subtitle: const Text('فودافون كاش / أورنج / إتصلات / WE / الاستلام يد بيد', style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 10)),
-            onChanged: (val) {
-              setState(() {
-                _selectedPaymentMethod = val!;
-              });
-            },
-          ),
-          
-          // 2. إنستا باي InstaPay (مغلقة - قريباً)
-          RadioListTile<String>(
-            value: 'instapay',
-            groupValue: _selectedPaymentMethod,
-            title: Row(
-              children: [
-                const Text('إنستا باي (InstaPay)', style: TextStyle(color: Colors.grey, fontSize: 13)),
-                const SizedBox(width: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(color: Colors.grey.shade800, borderRadius: BorderRadius.circular(4)),
-                  child: const Text('قريباً', style: TextStyle(color: Colors.amber, fontSize: 9, fontWeight: FontWeight.bold)),
-                ),
-              ],
-            ),
-            subtitle: const Text('سيتم تفعيل الدفع المباشر عبر تطبيق إنستا باي فور الربط', style: TextStyle(color: Colors.grey, fontSize: 10)),
-            onChanged: null, // تعطيل الاختيار حالياً
-          ),
-
-          // 3. كارت الفيزا / الماستر كارد (مغلقة - قريباً)
-          RadioListTile<String>(
-            value: 'card',
-            groupValue: _selectedPaymentMethod,
-            title: Row(
-              children: [
-                const Text('البطاقات البنكية (فيزا / ماستر كارد)', style: TextStyle(color: Colors.grey, fontSize: 13)),
-                const SizedBox(width: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(color: Colors.grey.shade800, borderRadius: BorderRadius.circular(4)),
-                  child: const Text('قريباً', style: TextStyle(color: Colors.amber, fontSize: 9, fontWeight: FontWeight.bold)),
-                ),
-              ],
-            ),
-            subtitle: const Text('الدفع المباشر عبر البوابة الإلكترونية', style: TextStyle(color: Colors.grey, fontSize: 10)),
-            onChanged: null, // تعطيل الاختيار حالياً
-          ),
-
-          const SizedBox(height: 24),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFB87733),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            ),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('تم إرسال الطلب وسيتم التواصل معك لتعليمات الدفع والتسليم!')),
-              );
-            },
-            child: const Text('تأكيد الطلب وإتمام الشراء', style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
-        ],
-      ),
-    );
-  }
-}// أضف هذا التبويب أو الشاشة ضمن تفاصيل طلبات العميل للاستلام والتقييم
-class OrderReviewScreen extends StatelessWidget {
-  const OrderReviewScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF12181F),
-      appBar: AppBar(
-        title: const Text('تقييم القطعة ورفع الصور', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 15)),
-        backgroundColor: const Color(0xFF12181F),
-        iconTheme: const IconThemeData(color: Color(0xFFB87733)),
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(20.0),
-        children: [
-          const Text('شاركنا صورتك للقطعة التراثية بعد الاستلام', style: TextStyle(color: Color(0xFFFEC7C2), fontWeight: FontWeight.bold, fontSize: 14)),
-          const SizedBox(height: 10),
-          const Text('ملاحظة: سيتم مراجعة الصورة من قِبل إدارة هاند ميد مصر ونشرها بالمتجر بعد الموافقة.', style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 11)),
-          const SizedBox(height: 20),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF1E2630),
-              foregroundColor: const Color(0xFFB87733),
-              side: const BorderSide(color: Color(0xFFB87733)),
-            ),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('تم إرسال الصورة للإدارة للمراجعة والنشر!')),
-              );
-            },
-            icon: const Icon(Icons.camera_alt_outlined),
-            label: const Text('إرفاق صورة القطعة الحقيقية'),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-
-class PrivacyPolicyScreen extends StatelessWidget {
-  const PrivacyPolicyScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF12181F),
-      appBar: AppBar(
-        title: const Text('سياسة الخصوصية', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 15)),
-        backgroundColor: const Color(0xFF12181F),
-        iconTheme: const IconThemeData(color: Color(0xFFB87733)),
-      ),
-      body: const Padding(
-        padding: EdgeInsets.all(20.0),
-        child: Text(
-          'تلتزم منصة "هاند ميد مصر" بحماية بيانات جميع العملاء والمستخدمين. البيانات التي يتم جمعها (كالاسم ورقم الهاتف وعنوان التوصيل) تُستخدم فقط لإتمام وإدارة طلبك وشحنه بأمان.',
-          style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 13, height: 1.6),
-        ),
-      ),
-    );
-  }
-}
-
-class TermsScreen extends StatelessWidget {
-  const TermsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF12181F),
-      appBar: AppBar(
-        title: const Text('الشروط والأحكام', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 15)),
-        backgroundColor: const Color(0xFF12181F),
-        iconTheme: const IconThemeData(color: Color(0xFFB87733)),
-      ),
-      body: const Padding(
-        padding: EdgeInsets.all(20.0),
-        child: Text(
-          'المنتجات المعروضة على منصة "هاند ميد مصر" هي منتجات يدوية وتراثية 100%. قد توجد بعض الاختلافات الدقيقة الطبيعية بين قطعة وأخرى نظراً لطبيعة الصنعة اليدوية الفريدة.',
-          style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 13, height: 1.6),
-        ),
-      ),
-    );
-  }
-}
+      padding
