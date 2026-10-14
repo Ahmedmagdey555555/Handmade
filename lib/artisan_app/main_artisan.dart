@@ -67,127 +67,139 @@ class _ArtisanRegisterScreenState extends State<ArtisanRegisterScreen> {
         title: const Text('تسجيل ورشة / صانع جديد', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 16)),
         backgroundColor: const Color(0xFF12181F),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Text('انضم لمنصة هاند ميد مصر 🛠️', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 6),
-            const Text('يرجى ملء البيانات وإرفاق الصور المطلوبة لتوثيق الورشة من قِبل الإدارة.', style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 11)),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _workshopNameController,
-              style: const TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                labelText: 'اسم الورشة / العلامة التجارية',
-                labelStyle: const TextStyle(color: Color(0xFF9E9E9E)),
-                filled: true,
-                fillColor: const Color(0xFF1E2630),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-              ),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _ownerNameController,
-              style: const TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                labelText: 'اسم صاحب الورشة بالكامل',
-                labelStyle: const TextStyle(color: Color(0xFF9E9E9E)),
-                filled: true,
-                fillColor: const Color(0xFF1E2630),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-              ),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _phoneController,
-              keyboardType: TextInputType.phone,
-              style: const TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                labelText: 'رقم الهاتف المحمول (المرتبط بمحفظة كاش)',
-                labelStyle: const TextStyle(color: Color(0xFF9E9E9E)),
-                filled: true,
-                fillColor: const Color(0xFF1E2630),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-              ),
-            ),
-            const SizedBox(height: 12),
-            DropdownButtonFormField<String>(
-              value: _selectedCategory,
-              dropdownColor: const Color(0xFF1E2630),
-              style: const TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                labelText: 'تخصص الورشة الرئيسي',
-                labelStyle: const TextStyle(color: Color(0xFF9E9E9E)),
-                filled: true,
-                fillColor: const Color(0xFF1E2630),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-              ),
-              items: _categories.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
-              onChanged: (val) => setState(() => _selectedCategory = val!),
-            ),
-            const SizedBox(height: 20),
-            const Text('التحقق من الهوية (إلزامي للتوثيق):', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 13, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _selfieCaptured ? Colors.green.shade900 : const Color(0xFF1E2630),
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                    ),
-                    onPressed: () {
-                      setState(() => _selfieCaptured = true);
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('تم التقاط الصورة الشخصية السيلفي 📸')));
-                    },
-                    icon: Icon(_selfieCaptured ? Icons.check_circle : Icons.camera_front),
-                    label: Text(_selfieCaptured ? 'تم السيلفي' : 'صورة سيلفي حية', style: const TextStyle(fontSize: 11)),
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(20.0),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.minHeight),
+                child: IntrinsicHeight(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Text('انضم لمنصة هاند ميد مصر 🛠️', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 18, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 6),
+                      const Text('يرجى ملء البيانات وإرفاق الصور المطلوبة لتوثيق الورشة من قِبل الإدارة.', style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 11)),
+                      const SizedBox(height: 20),
+                      TextField(
+                        controller: _workshopNameController,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          labelText: 'اسم الورشة / العلامة التجارية',
+                          labelStyle: const TextStyle(color: Color(0xFF9E9E9E)),
+                          filled: true,
+                          fillColor: const Color(0xFF1E2630),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      TextField(
+                        controller: _ownerNameController,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          labelText: 'اسم صاحب الورشة بالكامل',
+                          labelStyle: const TextStyle(color: Color(0xFF9E9E9E)),
+                          filled: true,
+                          fillColor: const Color(0xFF1E2630),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      TextField(
+                        controller: _phoneController,
+                        keyboardType: TextInputType.phone,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          labelText: 'رقم الهاتف المحمول (المرتبط بمحفظة كاش)',
+                          labelStyle: const TextStyle(color: Color(0xFF9E9E9E)),
+                          filled: true,
+                          fillColor: const Color(0xFF1E2630),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      DropdownButtonFormField<String>(
+                        value: _selectedCategory,
+                        dropdownColor: const Color(0xFF1E2630),
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          labelText: 'تخصص الورشة الرئيسي',
+                          labelStyle: const TextStyle(color: Color(0xFF9E9E9E)),
+                          filled: true,
+                          fillColor: const Color(0xFF1E2630),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                        ),
+                        items: _categories.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+                        onChanged: (val) => setState(() => _selectedCategory = val!),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text('التحقق من الهوية (إلزامي للتوثيق):', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 13, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: _selfieCaptured ? Colors.green.shade900 : const Color(0xFF1E2630),
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                              ),
+                              onPressed: () {
+                                setState(() => _selfieCaptured = true);
+                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('تم التقاط الصورة الشخصية السيلفي 📸')));
+                              },
+                              icon: Icon(_selfieCaptured ? Icons.check_circle : Icons.camera_front),
+                              label: Text(_selfieCaptured ? 'تم السيلفي' : 'صورة سيلفي حية', style: const TextStyle(fontSize: 11)),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: _idCaptured ? Colors.green.shade900 : const Color(0xFF1E2630),
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                              ),
+                              onPressed: () {
+                                setState(() => _idCaptured = true);
+                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('تم رفع صورة بطاقة الرقم القومي 🪪')));
+                              },
+                              icon: Icon(_idCaptured ? Icons.check_circle : Icons.badge_outlined),
+                              label: Text(_idCaptured ? 'تمت البطاقة' : 'صورة البطاقة', style: const TextStyle(fontSize: 11)),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFB87733),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        ),
+                        onPressed: () {
+                          if (!_selfieCaptured || !_idCaptured) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('يرجى التقاط السيلفي وصورة البطاقة لإتمام طلب التسجيل')),
+                            );
+                            return;
+                          }
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => const PendingApprovalScreen()),
+                          );
+                        },
+                        child: const Text('إرسال طلب الانضمام للإدارة', style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
                   ),
                 ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _idCaptured ? Colors.green.shade900 : const Color(0xFF1E2630),
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                    ),
-                    onPressed: () {
-                      setState(() => _idCaptured = true);
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('تم رفع صورة بطاقة الرقم القومي 🪪')));
-                    },
-                    icon: Icon(_idCaptured ? Icons.check_circle : Icons.badge_outlined),
-                    label: Text(_idCaptured ? 'تمت البطاقة' : 'صورة البطاقة', style: const TextStyle(fontSize: 11)),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFB87733),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               ),
-              onPressed: () {
-                if (!_selfieCaptured || !_idCaptured) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('يرجى التقاط السيلفي وصورة البطاقة لإتمام طلب التسجيل')),
-                  );
-                  return;
-                }
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const PendingApprovalScreen()),
-                );
-              },
-              child: const Text('إرسال طلب الانضمام للإدارة', style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
@@ -227,7 +239,6 @@ class PendingApprovalScreen extends StatelessWidget {
                 foregroundColor: const Color(0xFFB87733),
               ),
               onPressed: () {
-                // وضع تجريبي للانتقال للوحة التحكم
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const ArtisanDashboardScreen()),
