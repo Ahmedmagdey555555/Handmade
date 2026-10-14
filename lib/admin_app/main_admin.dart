@@ -639,3 +639,95 @@ class AdminSettingsAndUpdatesTab extends StatelessWidget {
     );
   }
 }
+// تبويب جديد في لوحة التحكم لإدارة النسب ومراجعة صور تقييمات العملاء
+class AdminCommissionsAndReviewsTab extends StatelessWidget {
+  const AdminCommissionsAndReviewsTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.all(16.0),
+      children: [
+        const Text('إدارة عمولة المنصة (Commission Settings)', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 14, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 10),
+        Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1E2630),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: const Color(0xFFA97835).withOpacity(0.3)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('نسبة عمولة المنصة الحالية من إجمالي الأوردر: 10%', style: TextStyle(color: Colors.white, fontSize: 12)),
+              const SizedBox(height: 10),
+              TextField(
+                keyboardType: TextInputType.number,
+                style: const TextStyle(color: Colors.white, fontSize: 12),
+                decoration: InputDecoration(
+                  labelText: 'تعديل نسبة العمولة الجديدة (%)',
+                  labelStyle: const TextStyle(color: Color(0xFF9E9E9E), fontSize: 11),
+                  filled: true,
+                  fillColor: const Color(0xFF12181F),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: Border.none),
+                ),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFB87733), foregroundColor: Colors.white),
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('تم تحديث نسبة العمولة وتطبيقها تلقائياً على السيستم!')),
+                  );
+                },
+                child: const Text('حفظ وتطبيق العمولة الجديدة'),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 20),
+        const Text('مراجعة صور تقييمات العملاء قبل النشر', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 14, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 10),
+        Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1E2630),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.amber.withOpacity(0.3)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('صورة مرفوعة من العميل: أحمد (تقييم صينية نحاس)', style: TextStyle(color: Colors.white, fontSize: 12)),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.green.shade800, foregroundColor: Colors.white),
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('تمت الموافقة ونشر الصورة في متجر العملاء!')),
+                        );
+                      },
+                      child: const Text('موافقة ونشر', style: TextStyle(fontSize: 11)),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.red.shade900, foregroundColor: Colors.white),
+                      onPressed: () {},
+                      child: const Text('رفض', style: TextStyle(fontSize: 11)),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
