@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
 
-// استيراد التطبيقات الثلاثة من مجلداتها
-import 'consumer_app/main_consumer.dart' as consumer;
-import 'artisan_app/main_artisan.dart' as artisan;
-import 'admin_app/main_admin.dart' as admin;
-
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const GatewayApp());
+  runApp(const HandmadeEgyptApp());
 }
 
-class GatewayApp extends StatelessWidget {
-  const GatewayApp({super.key});
+class HandmadeEgyptApp extends StatelessWidget {
+  const HandmadeEgyptApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'هاند ميد مصر - بوابة المنصات',
+      title: 'هاند ميد مصر',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
@@ -30,77 +25,164 @@ class GatewayApp extends StatelessWidget {
         ),
         fontFamily: 'Cairo',
       ),
-      locale: const Locale('ar', 'EG'),
-      home: const PlatformSelectorScreen(),
+      home: const MainDashboardScreen(),
     );
   }
 }
 
-class PlatformSelectorScreen extends StatelessWidget {
-  const PlatformSelectorScreen({super.key});
+class MainDashboardScreen extends StatefulWidget {
+  const MainDashboardScreen({super.key});
+
+  @override
+  State<MainDashboardScreen> createState() => _MainDashboardScreenState();
+}
+
+class _MainDashboardScreenState extends State<MainDashboardScreen> {
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> screens = [
+      const StoreTab(),
+      const ArtisanTab(),
+      const AdminTab(),
+    ];
+
     return Scaffold(
       backgroundColor: const Color(0xFF12181F),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+      appBar: AppBar(
+        title: const Text('هاند ميد مصر - المنصة الموحدة', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 16)),
+        backgroundColor: const Color(0xFF12181F),
+        centerTitle: true,
+      ),
+      body: screens[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        backgroundColor: const Color(0xFF1E2630),
+        selectedItemColor: const Color(0xFFB87733),
+        unselectedItemColor: const Color(0xFF9E9E9E),
+        type: BottomNavigationBarType.fixed,
+        onTap: (index) => setState(() => _currentIndex = index),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.storefront), label: 'العميل'),
+          BottomNavigationBarItem(icon: Icon(Icons.handyman), label: 'التاجر والورش'),
+          BottomNavigationBarItem(icon: Icon(Icons.admin_panel_settings), label: 'الإدارة'),
+        ],
+      ),
+    );
+  }
+}
+
+// 1. واجهة العميل (المتجر)
+class StoreTab extends StatelessWidget {
+  const StoreTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        const Text('أهلاً بك في متجر هاند ميد مصر 🏛️', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 18, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 10),
+        Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(color: const Color(0xFF1E2630), borderRadius: BorderRadius.circular(10)),
+          child: const Text('🔒 أموالك محمية بنظام الضمان الكامل للمنصة حتى استلام القطعة ومراجعتها.', style: TextStyle(color: Colors.amber, fontSize: 12)),
+        ),
+        const SizedBox(height: 20),
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, childAspectRatio: 0.75, crossAxisSpacing: 12, mainAxisSpacing: 12,
+          ),
+          itemCount: 2,
+          itemBuilder: (context, index) {
+            return Container(
+              decoration: BoxDecoration(color: const Color(0xFF1E2630), borderRadius: BorderRadius.circular(10)),
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.image, color: Color(0xFFB87733), size: 40),
+                  SizedBox(height: 8),
+                  Text('عباية تراثية مطرزة', style: TextStyle(color: Colors.white, fontSize: 12)),
+                  Text('1,450 ج.م', style: TextStyle(color: Color(0xFFB87733), fontWeight: FontWeight.bold)),
+                ],
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+// 2. واجهة التاجر والورش
+class ArtisanTab extends StatefulWidget {
+  const ArtisanTab({super.key});
+
+  @override
+  State<ArtisanTab> createState() => _ArtisanTabState();
+}
+
+class _ArtisanTabState extends State<ArtisanTab> {
+  bool _verified = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        const Text('بوابة الورش والتجار 🛠️', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 18, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 10),
+        TextField(
+          style: const TextStyle(color: Colors.white),
+          decoration: InputDecoration(
+            labelText: 'اسم الورشة أو الصانع',
+            filled: true,
+            fillColor: const Color(0xFF1E2630),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+          ),
+        ),
+        const SizedBox(height: 16),
+        ElevatedButton.icon(
+          style: ElevatedButton.styleFrom(backgroundColor: _verified ? Colors.green : const Color(0xFFB87733)),
+          onPressed: () {
+            setState(() => _verified = true);
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('تم التحقق ورفع بيانات التوثيق بنجاح!')));
+          },
+          icon: Icon(_verified ? Icons.check : Icons.camera_front),
+          label: Text(_verified ? 'تم توثيق الورشة' : 'رفع سيلفي التحقق والبطاقة'),
+        ),
+      ],
+    );
+  }
+}
+
+// 3. واجهة الإدارة
+class AdminTab extends StatelessWidget {
+  const AdminTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        const Text('لوحة تحكم الأدمن 🛡️', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 18, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 10),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(color: const Color(0xFF1E2630), borderRadius: BorderRadius.circular(10)),
+          child: const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(Icons.handyman_rounded, color: Color(0xFFB87733), size: 70),
-              const SizedBox(height: 16),
-              const Text(
-                'منصة هاند ميد مصر 🇪🇬',
-                style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 22, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'اختر البوابة التي ترغب في دخولها للبدء:',
-                style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 13),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 40),
-
-              // 1. زرار تطبيق العميل (المتجر)
-              _buildPortalButton(
-                context,
-                title: 'بوابة العميل (المتجر التسوقي)',
-                subtitle: 'تصفح القطع التراثية والطلب والدفع الآمن',
-                icon: Icons.shopping_bag_outlined,
-                color: const Color(0xFFB87733),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const consumer.LoginScreen()),
-                  );
-                },
-              ),
-              const SizedBox(height: 16),
-
-              // 2. زرار تطبيق التاجر (الورش)
-              _buildPortalButton(
-                context,
-                title: 'بوابة التاجر والورش 🛠️',
-                subtitle: 'تسجيل الورشة، رفع المنتجات، ومتابعة الأرباح',
-                icon: Icons.storefront_outlined,
-                color: const Color(0xFFA97835),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const artisan.ArtisanRegisterScreen()),
-                  );
-                },
-              ),
-              const SizedBox(height: 16),
-
-              // 3. زرار لوحة تحكم الأدمن
-              _buildPortalButton(
-                context,
-                title: 'لوحة تحكم الإدارة (Admin) 🛡️',
-                subtitle: 'توثيق الورش، مراجعة الجودة، وإدارة الضمان',
-                icon: Icons.admin_panel_settings_outlined,
-                color: Colors.
+              Text('حساب الضمان الإجمالي (Escrow)', style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 12)),
+              SizedBox(height: 6),
+              Text('48,500 ج.م', style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold)),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
