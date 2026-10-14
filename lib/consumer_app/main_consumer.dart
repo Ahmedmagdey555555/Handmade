@@ -368,7 +368,7 @@ class CustomOrderTab extends StatelessWidget {
             labelStyle: const TextStyle(color: Color(0xFF9E9E9E)),
             filled: true,
             fillColor: const Color(0xFF1E2630),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: Border.none),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: Colors.transparent)),
           ),
           maxLines: 4,
         ),
