@@ -1,4 +1,4 @@
-name: handmade_egypt
+Name: handmade_egypt
 description: "A multi-vendor handmade marketplace monorepo for Egyptian heritage."
 publish_to: "none"
 version: 1.0.0+1
@@ -18,10 +18,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
-  # تعريف خط Cairo اللي اتفقنا عليه لكل التطبيقات
-  fonts:
-    - family: Cairo
-      fonts:
-        - asset: assets/fonts/Cairo-Regular.ttf
-        - asset: assets/fonts/Cairo-Bold.ttf
