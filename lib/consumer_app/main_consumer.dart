@@ -365,6 +365,9 @@ class ConsumerOrdersTab extends StatelessWidget {
   }
 }
 
+// ----------------------------------------------------
+// شاشة حساب العميل (متضمنة سياسة الخصوصية والشروط لج جوجل)
+// ----------------------------------------------------
 class ConsumerProfileTab extends StatelessWidget {
   const ConsumerProfileTab({super.key});
 
@@ -372,14 +375,91 @@ class ConsumerProfileTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.all(20.0),
-      children: const [
-        Text('حساب العميل', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 16, fontWeight: FontWeight.bold)),
-        SizedBox(height: 16),
-        ListTile(
+      children: [
+        const Text('حساب العميل', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 16, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 16),
+        const ListTile(
           leading: Icon(Icons.location_on_outlined, color: Color(0xFFB87733)),
           title: Text('عناوين الشحن', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 13)),
         ),
+        const Divider(color: Color(0xFF1E2630)),
+        // سياسة الخصوصية
+        ListTile(
+          leading: const Icon(Icons.privacy_tip_outlined, color: Color(0xFFB87733)),
+          title: const Text('سياسة الخصوصية', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 13)),
+          subtitle: const Text('معلومات حول حماية بياناتك الشخصية', style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 10)),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const PrivacyPolicyScreen()),
+            );
+          },
+        ),
+        // الشروط والأحكام
+        ListTile(
+          leading: const Icon(Icons.description_outlined, color: Color(0xFFB87733)),
+          title: const Text('الشروط والأحكام', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 13)),
+          subtitle: const Text('شروط الاستخدام وسياسة الطلبات', style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 10)),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const TermsScreen()),
+            );
+          },
+        ),
       ],
+    );
+  }
+}
+
+// صفحة سياسة الخصوصية
+class PrivacyPolicyScreen extends StatelessWidget {
+  const PrivacyPolicyScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF12181F),
+      appBar: AppBar(
+        title: const Text('سياسة الخصوصية', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 15)),
+        backgroundColor: const Color(0xFF12181F),
+        iconTheme: const IconThemeData(color: Color(0xFFB87733)),
+      ),
+      body: const Padding(
+        padding: EdgeInsets.all(20.0),
+        child: SingleChildScrollView(
+          child: Text(
+            'نحن في تطبيق "هاند ميد مصر" نلتزم بحماية خصوصيتك وبياناتك الشخصية. يتم استخدام بياناتك (مثل الاسم ورقم الهاتف وعنوان الشحن) فقط لغرض إتمام وتوصيل طلبات المنتجات التراثية ومتابعة الشحن. لا نقوم بمشاركة بياناتك مع أي طرف ثالث إلا الجهات المسؤولة عن الشحن والتوصيل لضمان وصول طلبك بكفاءة وأمان.',
+            style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 13, height: 1.6),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// صفحة الشروط والأحكام
+class TermsScreen extends StatelessWidget {
+  const TermsScreen({super.key});
+
+  @override
+  Widget build(BuildContextENT context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF12181F),
+      appBar: AppBar(
+        title: const Text('الشروط والأحكام', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 15)),
+        backgroundColor: const Color(0xFF12181F),
+        iconTheme: const IconThemeData(color: Color(0xFFB87733)),
+      ),
+      body: const Padding(
+        padding: EdgeInsets.all(20.0),
+        child: SingleChildScrollView(
+          child: Text(
+            'باستخدامك لتطبيق "هاند ميد مصر"، فإنك توافق على الالتزام بشروط الاستخدام الخاصة بنا. جميع المنتجات المعروضة هي منتجات يدوية تراثية أصيلة وقد تختلف قليلاً في التفاصيل الدقيقة نظراً لطبيعتها اليدوية الخالصة. يحق للإدارة مراجعة الطلبات وتعديلها بما يضمن حقوق الحرفي والعميل.',
+            style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 13, height: 1.6),
+          ),
+        ),
+      ),
     );
   }
 }
