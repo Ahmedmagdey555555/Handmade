@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const HandmadeEgyptArtisanApp());
+  runApp(const HandmadeEgyptAdminApp());
 }
 
-class HandmadeEgyptArtisanApp extends StatelessWidget {
-  const HandmadeEgyptArtisanApp({super.key});
+class HandmadeEgyptAdminApp extends StatelessWidget {
+  const HandmadeEgyptAdminApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Handmade Egypt - Artisan',
+      title: 'Handmade Egypt - Admin',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
@@ -30,30 +30,27 @@ class HandmadeEgyptArtisanApp extends StatelessWidget {
         Locale('ar', 'EG'),
         Locale('en', 'US'),
       ],
-      home: const ArtisanHomeScreen(),
+      home: const AdminHomeScreen(),
     );
   }
 }
 
-class ArtisanHomeScreen extends StatefulWidget {
-  const ArtisanHomeScreen({super.key});
+class AdminHomeScreen extends StatefulWidget {
+  const AdminHomeScreen({super.key});
 
   @override
-  State<ArtisanHomeScreen> createState() => _ArtisanHomeScreenState();
+  State<AdminHomeScreen> createState() => _AdminHomeScreenState();
 }
 
-class _ArtisanHomeScreenState extends State<ArtisanHomeScreen> {
+class _AdminHomeScreenState extends State<AdminHomeScreen> {
   int _currentIndex = 0;
-  
-  // حالة موافقة الإدارة (تكون false افتراضياً للحسابات الجديدة)
-  final bool _isApprovedByAdmin = true; 
 
   final List<Widget> _screens = [
-    const ArtisanDashboardTab(),
-    const ArtisanProductsTab(),
-    const ArtisanPackagesTab(),
-    const ArtisanWalletTab(),
-    const ArtisanProfileTab(),
+    const AdminDashboardTab(),
+    const AdminApprovalsAndUsersTab(),
+    const AdminAdsManagementTab(), // تبويب إدارة وتفعيل الإعلانات المدفوعة
+    const AdminShippingAndBarcodesTab(),
+    const AdminFinancialsAndEscrowTab(),
   ];
 
   @override
@@ -62,17 +59,14 @@ class _ArtisanHomeScreenState extends State<ArtisanHomeScreen> {
       backgroundColor: const Color(0xFF12181F),
       appBar: AppBar(
         title: const Text(
-          'هاند ميد مصر - بوابة الحرفي والتاجر',
+          'هاند ميد مصر - لوحة التحكم الشاملة',
           style: TextStyle(color: Color(0xFFFEC7C2), fontWeight: FontWeight.bold, fontSize: 16),
         ),
         backgroundColor: const Color(0xFF12181F),
         elevation: 0,
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Color(0xFFB87733)),
       ),
-      body: _isApprovedByAdmin
-          ? _screens[_currentIndex]
-          : const AccountPendingApprovalScreen(),
+      body: _screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         backgroundColor: const Color(0xFF1E2630),
@@ -87,23 +81,23 @@ class _ArtisanHomeScreenState extends State<ArtisanHomeScreen> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.dashboard_outlined),
-            label: 'الورشة',
+            label: 'الرئيسية',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.inventory_2_outlined),
-            label: 'منتجاتي',
+            icon: Icon(Icons.people_outline),
+            label: 'المستخدمين',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.card_membership_outlined),
-            label: 'الباقات والطلبات',
+            icon: Icon(Icons.campaign_outlined),
+            label: 'الإعلانات',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet_outlined),
-            label: 'المحفظة',
+            icon: Icon(Icons.local_shipping_outlined),
+            label: 'الشحن والباركود',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: 'حسابي والتحقق',
+            icon: Icon(Icons.account_balance_outlined),
+            label: 'الماليات',
           ),
         ],
       ),
@@ -111,49 +105,8 @@ class _ArtisanHomeScreenState extends State<ArtisanHomeScreen> {
   }
 }
 
-// شاشة تنبيه الحساب قيد المراجعة والتحقق من الهوية
-class AccountPendingApprovalScreen extends StatelessWidget {
-  const AccountPendingApprovalScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: const Color(0xFF1E2630),
-                shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFFB87733), width: 2),
-              ),
-              child: const Icon(Icons.hourglass_top_rounded, color: Color(0xFFB87733), size: 50),
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'طلب انضمام الورشة قيد التحقق والاعتماد ⏳',
-              style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 18, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              'تم استلام صورة البطاقة/الباسبور والسيلفي السري بنجاح. جاري مطابقة البيانات من قِبل إدارة "هاند ميد مصر". سيتم تفعيل حسابك فور إتمام مراجعة الأمان.',
-              style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 12, height: 1.5),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// 1. تبويب لوحة تحكم الورشة والطلبات الناتجة
-class ArtisanDashboardTab extends StatelessWidget {
-  const ArtisanDashboardTab({super.key});
+class AdminDashboardTab extends StatelessWidget {
+  const AdminDashboardTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -165,39 +118,216 @@ class ArtisanDashboardTab extends StatelessWidget {
           decoration: BoxDecoration(
             color: const Color(0xFF1E2630),
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: const Color(0xFFA97835).withOpacity(0.4)),
+            border: Border.all(color: const Color(0xFFB87733).withOpacity(0.5)),
           ),
           child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'مرحباً بك يا معلم إبراهيم ⚒️',
-                style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 16, fontWeight: FontWeight.bold),
+              Text('مرحباً أحمد مجدي - الإدارة العليا 🛡️', style: TextStyle(color: Color(0xFFFEC7C2), fontWeight: FontWeight.bold, fontSize: 16)),
+              SizedBox(height: 4),
+              Text('المنظومة الربط المباشر مع شركات الشحن وتطبيقات العميل والتاجر والإعلانات', style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 11)),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(child: _AdminStatCard(title: 'إجمالي الشحنات', value: '342 شحنة', icon: Icons.inventory_2, color: const Color(0xFFB87733))),
+            const SizedBox(width: 10),
+            Expanded(child: _AdminStatCard(title: 'إعلانات نشطة', value: '8 إعلانات', icon: Icons.campaign, color: Colors.amber)),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _AdminStatCard extends StatelessWidget {
+  const _AdminStatCard({required this.title, required this.value, required this.icon, required this.color});
+  final String title;
+  final String value;
+  final IconData icon;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E2630),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withOpacity(0.3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: color, size: 22),
+          const SizedBox(height: 8),
+          Text(title, style: const TextStyle(color: Color(0xFF9E9E9E), fontSize: 10)),
+          const SizedBox(height: 2),
+          Text(value, style: const TextStyle(color: Color(0xFFFEC7C2), fontWeight: FontWeight.bold, fontSize: 13)),
+        ],
+      ),
+    );
+  }
+}
+
+class AdminApprovalsAndUsersTab extends StatelessWidget {
+  const AdminApprovalsAndUsersTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text('إدارة المستخدمين والحسابات', style: TextStyle(color: Colors.white)),
+    );
+  }
+}
+
+// تبويب مخصص لإدارة البنرات الإعلانية والطلب المدفوع من التجار
+class AdminAdsManagementTab extends StatelessWidget {
+  const AdminAdsManagementTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.all(16.0),
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('طلبات الإعلانات المدفوعة والبنرات', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 14, fontWeight: FontWeight.bold)),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFB87733), foregroundColor: Colors.white),
+              onPressed: () {
+                _showAddBannerDialog(context);
+              },
+              icon: const Icon(Icons.add, size: 16),
+              label: const Text('إعلان جديد', style: TextStyle(fontSize: 11)),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1E2630),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.amber.withOpacity(0.4)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('طلب إعلان مميز: ورشة المعلم إبراهيم', style: TextStyle(color: Color(0xFFFEC7C2), fontWeight: FontWeight.bold, fontSize: 12)),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.circular(4)),
+                    child: const Text('قيد المراجعة', style: TextStyle(color: Colors.black, fontSize: 9, fontWeight: FontWeight.bold)),
+                  ),
+                ],
               ),
-              SizedBox(height: 6),
-              Text(
-                'ورشة النحاسيات والتطعيم - خان الخليلي (هوية موثقة وضمان مفعل)',
-                style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 11),
+              const SizedBox(height: 6),
+              const Text('العنوان: خصم 20% على طقم النحاس التراثي', style: TextStyle(color: Colors.white, fontSize: 11)),
+              const Text('المدة المطلوبة: 7 أيام | القيمة المفترضة: 350 ج.م (مدفوعة من المحفظة)', style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 10)),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.green.shade800, foregroundColor: Colors.white),
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('تم تفعيل ونشر الإعلان بنجاح في واجهة المتجر الرئيسية!')),
+                        );
+                      },
+                      icon: const Icon(Icons.check_circle_outline, size: 16),
+                      label: const Text('موافقة ونشر بالمتجر', style: TextStyle(fontSize: 11)),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red.shade900, foregroundColor: Colors.white),
+                    onPressed: () {},
+                    child: const Text('رفض الطلب', style: TextStyle(fontSize: 11)),
+                  ),
+                ],
               ),
             ],
           ),
         ),
-        const SizedBox(height: 20),
-        Row(
+      ],
+    );
+  }
+
+  static void _showAddBannerDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF1E2630),
+        title: const Text('إضافة إعلان خاص بالمنصة', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 15, fontWeight: FontWeight.bold)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
-              child: _StatCard(
-                title: 'المبيعات هذا الشهر',
-                value: '12,450 ج.م',
-                icon: Icons.monetization_on_outlined,
+            TextField(
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: 'عنوان الإعلان الرئيسية',
+                labelStyle: const TextStyle(color: Color(0xFF9E9E9E)),
+                filled: true,
+                fillColor: const Color(0xFF12181F),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: Border.none),
               ),
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _StatCard(
-                title: 'طلبات قيد التنفيذ',
-                value: '4 طلبات',
-                icon: Icons.pending_actions_outlined,
+            const SizedBox(height: 10),
+            TextField(
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: 'الوصف الفرعي للإعلان',
+                labelStyle: const TextStyle(color: Color(0xFF9E9E9E)),
+                filled: true,
+                fillColor: const Color(0xFF12181F),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: Border.none),
               ),
             ),
-          
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('إلغاء', style: TextStyle(color: Colors.grey)),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFB87733), foregroundColor: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('تم نشر الإعلان الخاص بالمنصة بنجاح!')),
+              );
+            },
+            child: const Text('نشر الإعلان'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class AdminShippingAndBarcodesTab extends StatelessWidget {
+  const AdminShippingAndBarcodesTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: Text('الشحن والباركود', style: TextStyle(color: Colors.white)));
+  }
+}
+
+class AdminFinancialsAndEscrowTab extends StatelessWidget {
+  const AdminFinancialsAndEscrowTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: Text('الماليات والضمان', style: TextStyle(color: Colors.white)));
+  }
+}
