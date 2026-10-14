@@ -576,7 +576,46 @@ class _CartScreenState extends State<CartScreen> {
       ),
     );
   }
+}// أضف هذا التبويب أو الشاشة ضمن تفاصيل طلبات العميل للاستلام والتقييم
+class OrderReviewScreen extends StatelessWidget {
+  const OrderReviewScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF12181F),
+      appBar: AppBar(
+        title: const Text('تقييم القطعة ورفع الصور', style: TextStyle(color: Color(0xFFFEC7C2), fontSize: 15)),
+        backgroundColor: const Color(0xFF12181F),
+        iconTheme: const IconThemeData(color: Color(0xFFB87733)),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(20.0),
+        children: [
+          const Text('شاركنا صورتك للقطعة التراثية بعد الاستلام', style: TextStyle(color: Color(0xFFFEC7C2), fontWeight: FontWeight.bold, fontSize: 14)),
+          const SizedBox(height: 10),
+          const Text('ملاحظة: سيتم مراجعة الصورة من قِبل إدارة هاند ميد مصر ونشرها بالمتجر بعد الموافقة.', style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 11)),
+          const SizedBox(height: 20),
+          ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF1E2630),
+              foregroundColor: const Color(0xFFB87733),
+              side: const BorderSide(color: Color(0xFFB87733)),
+            ),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('تم إرسال الصورة للإدارة للمراجعة والنشر!')),
+              );
+            },
+            icon: const Icon(Icons.camera_alt_outlined),
+            label: const Text('إرفاق صورة القطعة الحقيقية'),
+          ),
+        ],
+      ),
+    );
+  }
 }
+
 
 class PrivacyPolicyScreen extends StatelessWidget {
   const PrivacyPolicyScreen({super.key});
